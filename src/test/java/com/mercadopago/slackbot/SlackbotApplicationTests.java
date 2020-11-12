@@ -1,4 +1,4 @@
-package com.djamware.slackbot;
+package com.mercadopago.slackbot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
