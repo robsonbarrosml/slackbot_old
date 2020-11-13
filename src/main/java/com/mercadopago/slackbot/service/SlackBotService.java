@@ -50,13 +50,13 @@ public class SlackBotService extends Bot {
         return this;
     }
     
-    /*public String setCommand (Event event) {
-    	 if (event.getText().contains("pagamento")) {
+    public String setCommand (Event event) {
+    	 if (event.getText().contains("pay")) {
     	      return "findPay";
     	    } else {
     	      return "stopConversation";
     	    }
-    }*/
+    }
     
     public String sendResponse (String event) {
     	if (event.equals("findPay")) {

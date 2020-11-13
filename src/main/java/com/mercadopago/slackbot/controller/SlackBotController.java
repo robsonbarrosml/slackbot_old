@@ -54,21 +54,23 @@ public class SlackBotController extends Bot {
     }
     
     
-    @Controller(events = {EventType.DIRECT_MENTION}, pattern = "pay", next = "findPay")
+    @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
     public void commandPay(WebSocketSession session, Event event) {
-    	System.out.println("findPay");
-        startConversation(event, "findPay");      
-        reply(session, event, new Message(slackBotService.sendResponse("findPay")));
+    	System.out.println(slackBotService.setCommand(event));
+    	if (!slackBotService.setCommand(event).equals("stopConversation")) {
+    		startConversation(event, slackBotService.setCommand(event));
+    	}  
+        reply(session, event, new Message(slackBotService.sendResponse(slackBotService.setCommand(event))));
     }
     
-    @Controller
-    public void stopConversation(WebSocketSession session, Event event) {    
-        if (isConversationOn(event)) {
-        	reply(session, event, new Message("Comando inválido, tente novamente."));
-            System.out.println("stopConversationstopConversation");
-            stopConversation(event); 
-        } 
-    }
+//    @Controller
+//    public void stopConversation(WebSocketSession session, Event event) {    
+//        if (isConversationOn(event)) {
+//        	reply(session, event, new Message("Comando inválido, tente novamente."));
+//            System.out.println("stopConversationstopConversation");
+//            stopConversation(event); 
+//        } 
+//    }
     
 
 //    @Controller(events = {EventType.DIRECT_MENTION, EventType.MESSAGE}, pattern = "pay", next = "findPay")
