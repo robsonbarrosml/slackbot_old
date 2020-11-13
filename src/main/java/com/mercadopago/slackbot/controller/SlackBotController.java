@@ -54,7 +54,7 @@ public class SlackBotController extends Bot {
     }
     
     
-    @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
+    @Controller(events = {EventType.DIRECT_MENTION})
     public void commandPay(WebSocketSession session, Event event) {
     	System.out.println(slackBotService.setCommand(event));
     	if (!slackBotService.setCommand(event).equals("stopConversation")) {
@@ -63,73 +63,17 @@ public class SlackBotController extends Bot {
         reply(session, event, new Message(slackBotService.sendResponse(slackBotService.setCommand(event))));
     }
     
-//    @Controller
-//    public void stopConversation(WebSocketSession session, Event event) {    
-//        if (isConversationOn(event)) {
-//        	reply(session, event, new Message("Comando inválido, tente novamente."));
-//            System.out.println("stopConversationstopConversation");
-//            stopConversation(event); 
-//        } 
-//    }
-    
-
-//    @Controller(events = {EventType.DIRECT_MENTION, EventType.MESSAGE}, pattern = "pay", next = "findPay")
-//    public void commandPay(WebSocketSession session, Event event) {
-//        startConversation(event, "findPay");      
-//        reply(session, event, new Message("Informe o número do pagamento"));
-//    }
-//    
-//    
-//    
-    
-    
     @Controller
     public void findPay(WebSocketSession session, Event event) throws JsonProcessingException {
     	try {
+    		/* Verifica se uma conversa já foi iniciada */
     		if (isConversationOn(event)) {
-    			String uri = "http://api.mp.internal.ml.com/v1/payments/";
-//            	String params = "?attributes=id, payer,status,status_detail,operation_type";
-            	String payment = event.getText().substring(event.getText().indexOf(" ") + 1, event.getText().length());
-            	//10174126009
-            	
-            	RestTemplate restTemplate = new RestTemplate();
-                
-                HttpHeaders headers = new HttpHeaders();
-                headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-                headers.set("X-Caller-Scopes", "admin");
-             
-                HttpEntity<String> entity = new HttpEntity<String>(headers);
-                
-                ResponseEntity<JsonNode> result = restTemplate.exchange(uri + payment /*+ params*/, HttpMethod.GET, entity, JsonNode.class);
-                JsonNode responsePayload = result.getBody(); 
-                
-                Payment returnedPayment = mapper.treeToValue(responsePayload, Payment.class);
-
-                System.out.println(result);
+    			Payment returnedPayment = slackBotService.returnedPayment(event);
                 reply(session, event, new Message(returnedPayment.toString()));
     		}
     	} catch (Exception e) {
     		reply(session, event, new Message("Pagamento inválido, informe o comando novamente."));
 		}
     	stopConversation(event);
-    }
-    
-    
-    
-//    @Controller(events = {EventType.DIRECT_MENTION, EventType.MESSAGE}, pattern = "teste")
-//    public void test(WebSocketSession session, Event event) {
-//    	String payment = event.getText();
-//    	System.out.println(payment.substring(payment.indexOf(" ") + 1, payment.length()));
-//        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName() + " - " + event.getText()));
-//    }
-//    
-//    
-//    @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
-//    public void onReceiveDM(WebSocketSession session, Event event) {
-//        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
-//    }
-//    
-    
-    
-    
+    }    
 }

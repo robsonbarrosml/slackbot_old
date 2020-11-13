@@ -66,36 +66,25 @@ public class SlackBotService extends Bot {
   	    }
     }
     
-//    public void commandPay(WebSocketSession session, Event event) {
-//        startConversation(event, "findPay");      
-//        reply(session, event, new Message("Informe o número do pagamento"));
-//    }
-//    
-//    
-//    
-//    @Controller
-//    public void findPay(WebSocketSession session, Event event) throws JsonProcessingException {
-//    	String uri = "http://api.mp.internal.ml.com/v1/payments/";
-////    	String params = "?attributes=id, payer,status,status_detail,operation_type";
-//    	String payment = event.getText().substring(event.getText().indexOf(" ") + 1, event.getText().length());
-//    	//10174126009
-//    	
-//    	RestTemplate restTemplate = new RestTemplate();
-//        
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-//        headers.set("X-Caller-Scopes", "admin");
-//     
-//        HttpEntity<String> entity = new HttpEntity<String>(headers);
-//        
-//        ResponseEntity<JsonNode> result = restTemplate.exchange(uri + payment /*+ params*/, HttpMethod.GET, entity, JsonNode.class);
-//        JsonNode responsePayload = result.getBody(); 
-//        
-//        Payment returnedPayment = mapper.treeToValue(responsePayload, Payment.class);
-//
-//        System.out.println(result);
-//        reply(session, event, new Message(returnedPayment.toString()));
-//        stopConversation(event);
-//    }
-    
+    public Payment returnedPayment(Event event) throws JsonProcessingException {
+		String uri = "http://api.mp.internal.ml.com/v1/payments/";
+		String payment = event.getText().substring(event.getText().indexOf(" ") + 1, event.getText().length());
+		//10174126009
+		
+		RestTemplate restTemplate = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		headers.set("X-Caller-Scopes", "admin");
+          
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		
+		ResponseEntity<JsonNode> result = restTemplate.exchange(uri + payment, HttpMethod.GET, entity, JsonNode.class);
+		JsonNode responsePayload = result.getBody(); 
+		
+		Payment returnedPayment = mapper.treeToValue(responsePayload, Payment.class);
+
+		System.out.println(result);
+		return returnedPayment;
+	}    
 }
