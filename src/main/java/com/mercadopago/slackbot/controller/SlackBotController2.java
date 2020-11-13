@@ -1,5 +1,4 @@
-package com.mercadopago.slackbot.service;
-
+package com.mercadopago.slackbot.controller;
 
 import java.util.Arrays;
 
@@ -35,9 +34,9 @@ import me.ramswaroop.jbot.core.slack.models.Message;
  */
 @Component
 @Getter
-public class SlackBotService extends Bot {
+public class SlackBotController2 extends Bot {
 
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(SlackBotService.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(SlackBotController2.class);
 
     @Autowired
     ObjectMapper mapper = new ObjectMapper();
@@ -49,23 +48,8 @@ public class SlackBotService extends Bot {
     public Bot getSlackBot() {
         return this;
     }
-    
-    /*public String setCommand (Event event) {
-    	 if (event.getText().contains("pagamento")) {
-    	      return "findPay";
-    	    } else {
-    	      return "stopConversation";
-    	    }
-    }*/
-    
-    public String sendResponse (String event) {
-    	if (event.equals("findPay")) {
-  	      return "Informe o número do pagamento";
-  	    } else {
-  	      return "Comando inválido, tente novamente.";
-  	    }
-    }
-    
+//
+//    @Controller(events = {EventType.DIRECT_MENTION, EventType.MESSAGE}, pattern = "pay", next = "findPay")
 //    public void commandPay(WebSocketSession session, Event event) {
 //        startConversation(event, "findPay");      
 //        reply(session, event, new Message("Informe o número do pagamento"));
@@ -97,5 +81,33 @@ public class SlackBotService extends Bot {
 //        reply(session, event, new Message(returnedPayment.toString()));
 //        stopConversation(event);
 //    }
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    
+//    @Controller(events = {EventType.DIRECT_MENTION, EventType.MESSAGE}, pattern = "teste")
+//    public void test(WebSocketSession session, Event event) {
+//    	String payment = event.getText();
+//    	System.out.println(payment.substring(payment.indexOf(" ") + 1, payment.length()));
+//        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName() + " - " + event.getText()));
+//    }
+//    
+//    
+//    @Controller(events = {EventType.DIRECT_MENTION, EventType.DIRECT_MESSAGE})
+//    public void onReceiveDM(WebSocketSession session, Event event) {
+//        reply(session, event, new Message("Hi, I am " + slackService.getCurrentUser().getName()));
+//    }
+//    
+//    
+    
     
 }
